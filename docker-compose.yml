@@ -1,0 +1,57 @@
+version: '3.3'
+
+services:
+  drupal:
+    image: drupal:latest
+    ports:
+      - 80:80
+    volumes:
+      - drupal_modules1:/var/www/html/modules
+      - drupal_profiles1:/var/www/html/profiles
+      - drupal_themes1:/var/www/html/themes
+      - drupal_sites1:/var/www/html/sites
+    restart: always
+
+  postgres:
+    image: postgres:10
+    environment:
+      POSTGRES_PASSWORD: your_postgres_password
+    volumes:
+        - db_data1:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  drupal_modules1:
+    driver: local
+    driver_opts:
+      type: none
+      device: $PWD/${DRUPAL_MODULES}
+      o: bind
+
+  drupal_profiles1:
+    driver: local
+    driver_opts:
+      type: none
+      device: $PWD/${DRUPAL_PROFILES}
+      o: bind
+
+  drupal_sites1:
+    driver: local
+    driver_opts:
+      type: none
+      device: $PWD/${DRUPAL_SITES}
+      o: bind
+
+  drupal_themes1:
+    driver: local
+    driver_opts:
+      type: none
+      device: $PWD/${DRUPAL_THEMES}
+      o: bind
+
+  db_data1:
+    driver: local
+    driver_opts:
+      type: none
+      device: $PWD/${DB_DATA}
+      o: bind
